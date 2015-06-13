@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+    <title>Line Chart</title>
+    <script src="../Chart.js"></script>
+    <script src="d3.v3.min.js"></script>
+</head>
+<body>
+<div style="width:50%">
+    <div>
+        <canvas id="canvas" height="450" width="600"></canvas>
+    </div>
+</div>
+<h1 id="output">
+</h1>
+
+<a onclick="select(0)">Link</a>
+<a onclick="select(1)">Link1</a>
+
+<script>
+    _data = [];
+
+    function select(id) {
+        _data = [];
+
+        _data.push(salary[id].A_PCT10);
+        _data.push(salary[id].A_PCT25);
+        _data.push(salary[id].A_PCT50);
+        _data.push(salary[id].A_PCT75);
+        _data.push(salary[id].A_PCT90);
+
+        var randomScalingFactor = function () {
+            return Math.round(Math.random() * 100)
+        };
+
+
+        var lineChartData = {
+
+            labels: ["10", "25", "50", "75", "90"],
+
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(151,187,205,0.2)",
+                    strokeColor: "rgba(151,187,205,1)",
+                    pointColor: "rgba(151,187,205,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,1)",
+                    data: _data
+                }
+            ]
+
+        }
+
+
+//        window.onload = function () {
+
+        var ctx = document.getElementById("canvas").getContext("2d");
+        window.myLine = new Chart(ctx).Line(lineChartData, {
+            responsive: true
+        });
+
+//        }
+
+    }
+
+    var salary = [];
+
+
+    var rows, f = "sample.csv"
+
+    var parts = d3.csv(f, function (d) {
+        return {
+            A_PCT10: d.A_PCT10, A_PCT25: d.A_PCT25, A_PCT50: d.A_PCT50, A_PCT75: d.A_PCT75, A_PCT90: d.A_PCT90
+        };
+    }, function (error, rows) {
+
+
+        salary = rows;
+
+
+    });
+
+
+</script>
+</body>
+
+
+</html>
